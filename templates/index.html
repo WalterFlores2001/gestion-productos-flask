@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Listado de Productos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-4 titulo">
+        <h2>🛒 Listado de Productos</h2>
+        <p class="lead">Gestión de productos del supermercado</p>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-3 px-2">
+        <span class="fs-5">Cantidad de Productos: <strong>{{ total }}</strong></span>
+        <a href="{{ url_for('insertarProducto') }}" class="btn btn-custom">➕ Insertar Producto</a>
+    </div>
+
+    <form method="GET" class="d-flex mb-4 px-2 align-items-center" role="search">
+        <div class="dropdown me-2">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="searchTypeBtn">
+                Buscar por {{ filtro if filtro else 'Nombre' }}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#" onclick="setSearchType('Nombre')">Nombre</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setSearchType('ID')">ID</a></li>
+            </ul>
+        </div>
+
+        <input type="hidden" name="filtro" id="searchTypeInput" value="{{ filtro if filtro else 'Nombre' }}">
+        <input class="form-control me-2" type="search" name="buscar" placeholder="Buscar..." value="{{ buscar }}" aria-label="Buscar">
+        <button class="btn btn-outline-primary" type="submit">🔍 Buscar</button>
+    </form>
+
+    <script>
+        function setSearchType(type) {
+            document.getElementById('searchTypeInput').value = type;
+            document.getElementById('searchTypeBtn').innerText = 'Buscar por ' + type;
+        }
+    </script>
+
+    <div class="table-responsive tabla-contenedor">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if datos %}
+                    {% for curso in datos %}
+                        <tr>
+                            <td>{{ curso.id }}</td>
+                            <td>{{ curso.nombre }}</td>
+                            <td>
+                                <a href="{{ url_for('verProducto', id=curso.id, buscar=buscar, filtro=filtro) }}" class="btn btn-sm btn-info">Ver</a>
+                                <a href="{{ url_for('editarProducto', id=curso.id, buscar=buscar, filtro=filtro) }}" class="btn btn-sm btn-warning">Editar</a>
+                                <a href="{{ url_for('eliminarProducto', id=curso.id) }}" class="btn btn-sm btn-danger" onclick="return confirm('¿Estás seguro que deseas eliminar este producto?')">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3">❌ No contamos con ese producto.</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

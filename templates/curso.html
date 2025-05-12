@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #E9F1FA, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .detalle-card {
+            max-width: 500px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .titulo {
+            color: #003E6B;
+            font-weight: 700;
+        }
+        .btn-custom {
+            background-color: #00ABE4;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0091c2;
+        }
+        .list-group-item strong {
+            color: #003E6B;
+        }
+    </style>
+</head>
+<body class="d-flex justify-content-center align-items-center vh-100">
+    <div class="detalle-card text-center">
+        <h2 class="titulo mb-4">🧾 Detalle del Producto</h2>
+        <ul class="list-group text-start">
+            <li class="list-group-item"><strong>ID:</strong> {{ dato.id }}</li>
+            <li class="list-group-item"><strong>Nombre del Producto:</strong> {{ dato.nombre }}</li>
+            <li class="list-group-item"><strong>Categoría:</strong> {{ dato.categoria }}</li>
+            <li class="list-group-item"><strong>Precio:</strong> ${{ dato.precio }}</li>
+            <li class="list-group-item"><strong>Stock:</strong> {{ dato.stock }}</li>
+        </ul>
+        <div class="mt-4">
+            <a href="{{ url_for('inicio') }}" class="btn btn-custom">⬅ Volver</a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

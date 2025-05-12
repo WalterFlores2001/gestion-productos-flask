@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supermarket - {% block title %}{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(to bottom right, #E9F1FA, #ffffff);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        .sidebar {
+            min-height: 100vh;
+            background-color: #003E6B;
+            color: white;
+            padding: 20px;
+        }
+        .main-content {
+            padding: 20px;
+        }
+        .titulo {
+            font-weight: 700;
+            color: #003E6B;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .btn-custom {
+            background-color: #00ABE4;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0091c2;
+        }
+        .table thead {
+            background-color: #003E6B;
+            color: white;
+        }
+        .tabla-contenedor {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+        }
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .nav-link:hover {
+            color: white;
+        }
+        .nav-link.active {
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Menú lateral -->
+            {% if current_user.is_authenticated %}
+            <div class="col-md-3 col-lg-2 d-md-block sidebar">
+                <h4 class="mb-4">Supermarket</h4>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'inicio' %}active{% endif %}" href="{{ url_for('inicio') }}">🏠 Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'insertarProducto' %}active{% endif %}" href="{{ url_for('insertarProducto') }}">➕ Insertar Producto</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">📊 Reportes</a>
+                    </li>
+                    <li class="nav-item mt-4">
+                        <span class="nav-link text-white-50">Usuario: {{ current_user.username }}</span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{{ url_for('logout') }}">🚪 Cerrar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+            {% endif %}
+            
+            <!-- Contenido principal -->
+            <div class="{% if current_user.is_authenticated %}col-md-9 col-lg-10{% else %}col-12{% endif %} main-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
